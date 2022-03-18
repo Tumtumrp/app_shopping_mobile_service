@@ -16,8 +16,10 @@ import {
 import { User } from 'src/core/decorators/user.decorator';
 import { BasicAuthGuard } from 'src/core/guards/basic-auth.guard';
 import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
+import { JwtRefreshAuthGuard } from 'src/core/guards/jwt-refresh-auth.guard';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
+import { JwtRefreshPayloadDto } from './dto/jwt-refresh-payload.dto';
 import { LogoutResponseDto } from './dto/logout-response.dto';
 import { NewAccountRequestDto } from './dto/new-account-request.dto';
 import { NewAccountResponseDto } from './dto/new-account-response.dto';
@@ -38,6 +40,23 @@ export class AuthController {
   @Get('login')
   public async login(@User() user: AuthDto): Promise<TokensDto> {
     return await this.authService.login(user);
+  }
+
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'refresh token account successfully',
+    type: TokensDto,
+  })
+  @UseGuards(JwtRefreshAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Get('refresh-token')
+  public async refreshToken(
+    @User() user: JwtRefreshPayloadDto,
+  ): Promise<TokensDto> {
+    return await this.authService.refreshToken(
+      user.payload._id,
+      user.refreshToken,
+    );
   }
 
   @ApiBearerAuth()

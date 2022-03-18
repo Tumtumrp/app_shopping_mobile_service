@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   HttpStatus,
   Injectable,
   InternalServerErrorException,
@@ -29,6 +30,18 @@ export class AuthService {
     private readonly validateService: ValidationService,
     private readonly readFileService: ReadFileService,
   ) {}
+
+  private async findByPkJoinAccountTypeAndRefreshToken(
+    accountId: number,
+  ): Promise<Account> {
+    try {
+      return await this.accountModel.findByPk(accountId, {
+        include: [{ model: AccountType }, { model: RefreshToken }],
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 
   private async findByUsernameJoinAccountType(
     username: string,
@@ -61,7 +74,8 @@ export class AuthService {
     refreshToken: string,
   ): Promise<void> {
     try {
-      const refreshTokenHash = await this.bcryptService.hash(refreshToken);
+      const arrayToken: string[] = refreshToken.split('.');
+      const refreshTokenHash = await this.bcryptService.hash(arrayToken[2]);
 
       await this.refreshTokenModel.update(
         { refreshTokenHash },
@@ -122,6 +136,35 @@ export class AuthService {
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
+  }
+
+  public async refreshToken(
+    accountId: number,
+    refreshToken: string,
+  ): Promise<TokensDto> {
+    const account: Account = await this.findByPkJoinAccountTypeAndRefreshToken(
+      accountId,
+    );
+    if (!account || !account.refreshToken.refreshTokenHash)
+      throw new ForbiddenException('Access Denied');
+
+    const isMatch: boolean = await this.bcryptService.compare(
+      refreshToken.split('.')[2],
+      account.refreshToken.refreshTokenHash,
+    );
+    if (!isMatch) throw new ForbiddenException('Access Denied');
+
+    const tokens: TokensDto = await this.getTokens({
+      _id: account.accountId,
+      username: account.username,
+      role: account.accountType.accountTypeName,
+    });
+    await this.updateRefreshTokenByAccountId(
+      account.accountId,
+      tokens.refreshToken,
+    );
+
+    return tokens;
   }
 
   public async createNewAccount(

@@ -11,6 +11,7 @@ import { ValidationModule } from 'src/utils/validation/validation.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ReadFileModule } from 'src/utils/read-file/read-file.module';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { JwtRefreshStrategy } from './strategy/jwt-refresh.strategy';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
     ValidationModule,
     ReadFileModule,
   ],
-  providers: [AuthService, BasicStrategy, JwtStrategy],
+  providers: [AuthService, BasicStrategy, JwtStrategy, JwtRefreshStrategy],
   controllers: [AuthController],
   exports: [SequelizeModule],
 })
