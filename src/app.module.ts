@@ -9,7 +9,7 @@ import { AccountModule } from './app/account/account.module';
 import { ActiveModule } from './app/active/active.module';
 import { RefreshTokenModule } from './app/refresh-token/refresh-token.module';
 import { AuthModule } from './app/auth/auth.module';
-import { ReadFileModule } from './utils/read-file/read-file.module';
+import { AddressModule } from './app/address/address.module';
 
 @Module({
   imports: [
@@ -26,6 +26,7 @@ import { ReadFileModule } from './utils/read-file/read-file.module';
     ActiveModule,
     RefreshTokenModule,
     AuthModule,
+    AddressModule,
   ],
   controllers: [AppController],
   providers: [AppService],
