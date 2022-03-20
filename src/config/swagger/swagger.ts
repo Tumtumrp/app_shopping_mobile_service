@@ -1,9 +1,10 @@
 import { INestApplication } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { swaggerConfig } from './swagger.config';
 
 export class Swagger {
-  public static run(app: INestApplication): void {
+  public static run(app: INestApplication, configService: ConfigService): void {
     const document: DocumentBuilder = new DocumentBuilder()
       .setTitle(swaggerConfig.title)
       .setDescription(swaggerConfig.description)
@@ -11,6 +12,7 @@ export class Swagger {
     for (const tag of swaggerConfig.tags) {
       document.addTag(tag);
     }
+    document.addServer(`http://localhost:${configService.get<number>('PORT')}`);
     document.addBasicAuth();
     document.addBearerAuth();
 

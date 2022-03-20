@@ -3,7 +3,7 @@ import { EnvOptions } from './interface/env-options.interface';
 export const configuration = (): EnvOptions => {
   return {
     NODE_ENV: process.env.NODE_ENV,
-    ORIGIN: process.env.ORIGIN.split(' ') || ['http://localhost:3000'],
+    ORIGIN: process.env.ORIGIN || 'http://localhost:3000',
     PORT: parseInt(process.env.PORT, 10) || 5050,
     DB_HOST: process.env.DB_HOST || 'localhost',
     DB_PORT: parseInt(process.env.DB_PORT, 10) || 3306,

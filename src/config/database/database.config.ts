@@ -3,6 +3,7 @@ import { SequelizeModuleOptions } from '@nestjs/sequelize';
 import { AccountType } from 'src/app/account-type/entities/account-type.entity';
 import { Account } from 'src/app/account/entities/account.entity';
 import { Active } from 'src/app/active/entities/active.entity';
+import { Address } from 'src/app/address/entities/address.entity';
 import { RefreshToken } from 'src/app/refresh-token/entities/refresh-token.entity';
 
 export class DatabaseConfig {
@@ -17,7 +18,7 @@ export class DatabaseConfig {
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        models: [Active, AccountType, Account, RefreshToken],
+        models: [Active, AccountType, Account, RefreshToken, Address],
         autoLoadModels: true,
         synchronize: true,
       });

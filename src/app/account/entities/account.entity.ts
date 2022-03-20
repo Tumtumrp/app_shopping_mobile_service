@@ -6,6 +6,7 @@ import {
   DataType,
   Default,
   ForeignKey,
+  HasMany,
   HasOne,
   Model,
   PrimaryKey,
@@ -14,6 +15,7 @@ import {
 } from 'sequelize-typescript';
 import { AccountType } from 'src/app/account-type/entities/account-type.entity';
 import { Active } from 'src/app/active/entities/active.entity';
+import { Address } from 'src/app/address/entities/address.entity';
 import { RefreshToken } from 'src/app/refresh-token/entities/refresh-token.entity';
 
 @Table({ tableName: 'accounts', timestamps: true })
@@ -55,4 +57,7 @@ export class Account extends Model {
 
   @HasOne(() => RefreshToken)
   refreshToken: RefreshToken;
+
+  @HasMany(() => Address)
+  addresses: Address[];
 }

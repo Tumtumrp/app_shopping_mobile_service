@@ -11,12 +11,26 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService: ConfigService = app.get(ConfigService);
   const port: number = configService.get<number>('PORT');
-  // const whitelist = configService.get<string[]>('ORIGIN');
+  const whitelist: string[] = configService.get<string>('ORIGIN').split(',');
 
   app.use(helmet());
-  app.enableCors({
-    origin: '*',
-  });
+
+  if (configService.get<string>('NODE_ENV') === 'development') {
+    app.enableCors({ origin: '*' });
+  } else {
+    app.enableCors({
+      origin: (origin, cb) => {
+        if (whitelist.indexOf(origin) !== -1) {
+          cb(null, origin);
+        } else {
+          logger.log(`blocked cors for: ${origin}`);
+          cb(new Error('Not allowed by CORS'));
+        }
+      },
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type'],
+    });
+  }
   app.setGlobalPrefix('/api');
   app.useGlobalPipes(
     new ValidationPipe({
@@ -26,7 +40,7 @@ async function bootstrap() {
     }),
   );
 
-  Swagger.run(app);
+  Swagger.run(app, configService);
   await app.listen(port);
   logger.log(`Application server running on port ${port}`);
 }
