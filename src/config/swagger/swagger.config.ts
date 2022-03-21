@@ -13,6 +13,7 @@ export const swaggerConfig: SwaggerOptions = {
     'ActiveController',
     'BasketController',
     'ColorController',
+    'CapacityController',
     'ProductController',
     'ProductBrandController',
     'ProductColorController',

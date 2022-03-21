@@ -1,4 +1,75 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { CapacitiesResponseDto } from './dto/capacities-response.dto';
+import { CreateCapacityDto } from './dto/create-capacity.dto';
+import { CreateNewCapacityResponseDto } from './dto/create-new-capacity-response.dto';
+import { DeleteCapacityResponseDto } from './dto/delete-capacity-response.dto';
+import { Capacity } from './entities/capacity.entity';
 
 @Injectable()
-export class CapacityService {}
+export class CapacityService {
+  constructor(@InjectModel(Capacity) private capacityModel: typeof Capacity) {}
+
+  private async findAll(): Promise<Capacity[]> {
+    try {
+      return await this.capacityModel.findAll();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  private async createCapacity(capacityName: string): Promise<Capacity> {
+    try {
+      return await this.capacityModel.create({ capacityName });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  private async deleteByCapacityId(capacityId: number): Promise<number> {
+    try {
+      return await this.capacityModel.destroy({
+        where: { capacity_id: capacityId },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  public async findAllCapacity(): Promise<CapacitiesResponseDto[]> {
+    const capacities: Capacity[] = await this.findAll();
+
+    return capacities.map((capacity) => {
+      return new CapacitiesResponseDto({
+        capacityId: capacity.capacityId,
+        capacityName: capacity.capacityName,
+      });
+    });
+  }
+
+  public async createNewCapacity(
+    request: CreateCapacityDto,
+  ): Promise<CreateNewCapacityResponseDto> {
+    const capacity: Capacity = await this.createCapacity(request.capacityName);
+    if (!capacity) throw new InternalServerErrorException();
+
+    return new CreateNewCapacityResponseDto({
+      status: true,
+      message: 'create new capacity successfully',
+      capacity: request,
+    });
+  }
+
+  public async deleteCapacity(
+    capacityId: number,
+  ): Promise<DeleteCapacityResponseDto> {
+    const deleteCapacityId: number = await this.deleteByCapacityId(capacityId);
+    if (!deleteCapacityId) throw new InternalServerErrorException();
+
+    return new DeleteCapacityResponseDto({
+      status: true,
+      message: `delete capacity by ${deleteCapacityId} successfully`,
+      capacity: deleteCapacityId,
+    });
+  }
+}
