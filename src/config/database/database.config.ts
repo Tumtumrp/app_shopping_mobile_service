@@ -5,7 +5,10 @@ import { Account } from 'src/app/account/entities/account.entity';
 import { Active } from 'src/app/active/entities/active.entity';
 import { Address } from 'src/app/address/entities/address.entity';
 import { Basket } from 'src/app/basket/entities/basket.entity';
+import { Color } from 'src/app/color/entities/color.entity';
 import { ProductBrand } from 'src/app/product-brand/entities/product-brand.entity';
+import { ProductColor } from 'src/app/product-color/entities/product-color.entity';
+import { ProductImage } from 'src/app/product-image/entities/product-image.entity';
 import { Product } from 'src/app/product/entities/product.entity';
 import { RefreshToken } from 'src/app/refresh-token/entities/refresh-token.entity';
 
@@ -28,8 +31,11 @@ export class DatabaseConfig {
           RefreshToken,
           Address,
           Basket,
+          Color,
           ProductBrand,
           Product,
+          ProductImage,
+          ProductColor,
         ],
         autoLoadModels: true,
         synchronize: true,

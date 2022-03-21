@@ -4,6 +4,7 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   HasOne,
   Model,
   PrimaryKey,
@@ -12,6 +13,8 @@ import {
 } from 'sequelize-typescript';
 import { Basket } from 'src/app/basket/entities/basket.entity';
 import { ProductBrand } from 'src/app/product-brand/entities/product-brand.entity';
+import { ProductColor } from 'src/app/product-color/entities/product-color.entity';
+import { ProductImage } from 'src/app/product-image/entities/product-image.entity';
 
 @Table({ tableName: 'products', timestamps: true })
 export class Product extends Model {
@@ -33,4 +36,10 @@ export class Product extends Model {
 
   @HasOne(() => Basket)
   basket: Basket;
+
+  @HasMany(() => ProductImage)
+  productImages: ProductImage[];
+
+  @HasMany(() => ProductColor)
+  productColors: ProductColor[];
 }

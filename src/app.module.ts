@@ -13,6 +13,9 @@ import { AddressModule } from './app/address/address.module';
 import { BasketModule } from './app/basket/basket.module';
 import { ProductBrandModule } from './app/product-brand/product-brand.module';
 import { ProductModule } from './app/product/product.module';
+import { ColorModule } from './app/color/color.module';
+import { ProductColorModule } from './app/product-color/product-color.module';
+import { ProductImageModule } from './app/product-image/product-image.module';
 
 @Module({
   imports: [
@@ -33,6 +36,9 @@ import { ProductModule } from './app/product/product.module';
     BasketModule,
     ProductBrandModule,
     ProductModule,
+    ColorModule,
+    ProductColorModule,
+    ProductImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
