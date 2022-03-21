@@ -10,6 +10,7 @@ import { ActiveModule } from './app/active/active.module';
 import { RefreshTokenModule } from './app/refresh-token/refresh-token.module';
 import { AuthModule } from './app/auth/auth.module';
 import { AddressModule } from './app/address/address.module';
+import { BasketModule } from './app/basket/basket.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AddressModule } from './app/address/address.module';
     RefreshTokenModule,
     AuthModule,
     AddressModule,
+    BasketModule,
   ],
   controllers: [AppController],
   providers: [AppService],

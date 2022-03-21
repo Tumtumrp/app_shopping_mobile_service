@@ -16,6 +16,7 @@ import {
 import { AccountType } from 'src/app/account-type/entities/account-type.entity';
 import { Active } from 'src/app/active/entities/active.entity';
 import { Address } from 'src/app/address/entities/address.entity';
+import { Basket } from 'src/app/basket/entities/basket.entity';
 import { RefreshToken } from 'src/app/refresh-token/entities/refresh-token.entity';
 
 @Table({ tableName: 'accounts', timestamps: true })
@@ -60,4 +61,7 @@ export class Account extends Model {
 
   @HasMany(() => Address)
   addresses: Address[];
+
+  @HasMany(() => Basket)
+  baskets: Basket[];
 }
