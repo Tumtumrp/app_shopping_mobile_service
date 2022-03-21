@@ -11,6 +11,8 @@ import { RefreshTokenModule } from './app/refresh-token/refresh-token.module';
 import { AuthModule } from './app/auth/auth.module';
 import { AddressModule } from './app/address/address.module';
 import { BasketModule } from './app/basket/basket.module';
+import { ProductBrandModule } from './app/product-brand/product-brand.module';
+import { ProductModule } from './app/product/product.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { BasketModule } from './app/basket/basket.module';
     AuthModule,
     AddressModule,
     BasketModule,
+    ProductBrandModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
