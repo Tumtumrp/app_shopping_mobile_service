@@ -9,5 +9,6 @@ export const swaggerConfig: SwaggerOptions = {
     'AuthController',
     'AccountController',
     'AccountTypeController',
+    'AddressController',
   ],
 };

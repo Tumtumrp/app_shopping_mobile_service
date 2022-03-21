@@ -29,7 +29,7 @@ export class AccountController {
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @HttpCode(HttpStatus.OK)
-  @Post('/update-role')
+  @Post('update-role')
   public async updateRole(
     @User('_id') accountId: number,
     @Body() request: UpdateRoleDto,
