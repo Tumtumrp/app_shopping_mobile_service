@@ -21,6 +21,7 @@ import { CapacitiesResponseDto } from './dto/capacities-response.dto';
 import { CreateCapacityDto } from './dto/create-capacity.dto';
 import { CreateNewCapacityResponseDto } from './dto/create-new-capacity-response.dto';
 import { DeleteCapacityResponseDto } from './dto/delete-capacity-response.dto';
+import { UpdateCapacityResponseDto } from './dto/update-capacity-response.dto';
 import { UpdateCapacityDto } from './dto/update-capacity.dto';
 
 @ApiTags('CapacityController')
@@ -54,6 +55,10 @@ export class CapacityController {
   }
 
   @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'update capacity successfully',
+    type: UpdateCapacityResponseDto,
+  })
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @HttpCode(HttpStatus.OK)
@@ -61,8 +66,8 @@ export class CapacityController {
   public async updateCapacity(
     @Param('id', ParseIntPipe) capacityId: number,
     @Body() request: UpdateCapacityDto,
-  ): Promise<any> {
-    return { capacityId, request };
+  ): Promise<UpdateCapacityResponseDto> {
+    return await this.capacityService.updateCapacity(capacityId, request);
   }
 
   @ApiBearerAuth()

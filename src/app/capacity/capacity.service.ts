@@ -4,6 +4,8 @@ import { CapacitiesResponseDto } from './dto/capacities-response.dto';
 import { CreateCapacityDto } from './dto/create-capacity.dto';
 import { CreateNewCapacityResponseDto } from './dto/create-new-capacity-response.dto';
 import { DeleteCapacityResponseDto } from './dto/delete-capacity-response.dto';
+import { UpdateCapacityResponseDto } from './dto/update-capacity-response.dto';
+import { UpdateCapacityDto } from './dto/update-capacity.dto';
 import { Capacity } from './entities/capacity.entity';
 
 @Injectable()
@@ -21,6 +23,23 @@ export class CapacityService {
   private async createCapacity(capacityName: string): Promise<Capacity> {
     try {
       return await this.capacityModel.create({ capacityName });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  private async updateByCapacityId(
+    capacityId: number,
+    capacityName: string,
+  ): Promise<boolean> {
+    try {
+      const updated = await this.capacityModel.update(
+        { capacityName },
+        { where: { capacity_id: capacityId } },
+      );
+      if (!updated) return false;
+
+      return true;
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
@@ -57,6 +76,24 @@ export class CapacityService {
       status: true,
       message: 'create new capacity successfully',
       capacity: request,
+    });
+  }
+
+  public async updateCapacity(
+    capacityId: number,
+    request: UpdateCapacityDto,
+  ): Promise<UpdateCapacityResponseDto> {
+    const capacity: boolean = await this.updateByCapacityId(
+      capacityId,
+      request.capacityName,
+    );
+    if (!capacity) throw new InternalServerErrorException();
+
+    return new UpdateCapacityResponseDto({
+      status: capacity,
+      message: `update capacity by ${capacityId} successfully`,
+      capacity: capacityId,
+      capacityName: request.capacityName,
     });
   }
 
