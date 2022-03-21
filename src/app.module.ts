@@ -16,6 +16,9 @@ import { ProductModule } from './app/product/product.module';
 import { ColorModule } from './app/color/color.module';
 import { ProductColorModule } from './app/product-color/product-color.module';
 import { ProductImageModule } from './app/product-image/product-image.module';
+import { CapacityModule } from './app/capacity/capacity.module';
+import { ProductCapacityModule } from './app/product-capacity/product-capacity.module';
+import { ProductStockModule } from './app/product-stock/product-stock.module';
 
 @Module({
   imports: [
@@ -39,6 +42,9 @@ import { ProductImageModule } from './app/product-image/product-image.module';
     ColorModule,
     ProductColorModule,
     ProductImageModule,
+    CapacityModule,
+    ProductCapacityModule,
+    ProductStockModule,
   ],
   controllers: [AppController],
   providers: [AppService],

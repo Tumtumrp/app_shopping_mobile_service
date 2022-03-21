@@ -10,5 +10,12 @@ export const swaggerConfig: SwaggerOptions = {
     'AccountController',
     'AccountTypeController',
     'AddressController',
+    'ActiveController',
+    'BasketController',
+    'ColorController',
+    'ProductController',
+    'ProductBrandController',
+    'ProductColorController',
+    'ProductImageController',
   ],
 };

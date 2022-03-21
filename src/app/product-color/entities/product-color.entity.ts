@@ -4,11 +4,13 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { Color } from 'src/app/color/entities/color.entity';
+import { ProductCapacity } from 'src/app/product-capacity/entities/product-capacity.entity';
 import { Product } from 'src/app/product/entities/product.entity';
 
 @Table({ tableName: 'product_colors', timestamps: true })
@@ -28,4 +30,7 @@ export class ProductColor extends Model {
   @AllowNull(false)
   @Column({ type: DataType.INTEGER({ length: 10 }), field: 'color_id' })
   colorId: number;
+
+  @HasMany(() => ProductCapacity)
+  productCapacities: ProductCapacity[];
 }
